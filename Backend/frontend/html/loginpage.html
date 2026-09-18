@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+```
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Student Login</title>
+
+<link rel="stylesheet" href="../css /login.css">
+
+<script
+    src="https://www.google.com/recaptcha/api.js"
+    async
+    defer>
+</script>
+```
+
+</head>
+
+<body>
+
+```
+<main class="login-container">
+
+    <!-- Decorative side -->
+    <div class="login-decoration">
+        <div class="decoration-circle circle-one"></div>
+        <div class="decoration-circle circle-two"></div>
+
+        <div class="brand-mark">
+            <span>◆</span>
+        </div>
+
+        <div class="decoration-content">
+            <span class="eyebrow">STUDENT SPACE</span>
+
+            <h2>
+                Learn.
+                <br>
+                <em>Build.</em>
+                <br>
+                Become.
+            </h2>
+
+            <p>
+                Your academic journey deserves a beautiful
+                place to begin.
+            </p>
+        </div>
+
+        <div class="decoration-number">
+            01
+        </div>
+    </div>
+
+
+    <!-- Login -->
+    <section class="login-card">
+
+        <div class="login-top">
+
+            <div class="mobile-logo">
+                <span>◆</span>
+            </div>
+
+            <span class="login-label">
+                WELCOME BACK
+            </span>
+
+            <h1>
+                Sign in to
+                <span>continue.</span>
+            </h1>
+
+            <p class="subtitle">
+                Login to your student account
+                and continue your journey.
+            </p>
+
+        </div>
+
+
+        <form id="loginForm">
+
+            <!-- Email -->
+            <div class="input-group">
+
+                <label for="email">
+                    Email address
+                </label>
+
+                <div class="input-wrapper">
+
+                    <span class="input-icon">
+                        @
+                    </span>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="you@example.com"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- Password -->
+            <div class="input-group">
+
+                <div class="password-header">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <a
+                        href="#"
+                        class="forgot">
+                        Forgot password?
+                    </a>
+
+                </div>
+
+                <div class="input-wrapper">
+
+                    <span class="input-icon">
+                        •••
+                    </span>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- Remember -->
+            <div class="remember">
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        id="remember"
+                    >
+
+                    <span>
+                        Remember me
+                    </span>
+
+                </label>
+
+            </div>
+
+
+            <!-- Captcha -->
+            <div id="captcha">
+
+                <div
+                    class="g-recaptcha"
+                    data-sitekey="6Lf_BqItAAAAALBmJkvQwoxA3H7GF1m9ullcJWhS">
+                </div>
+
+            </div>
+
+
+            <!-- Login -->
+            <button
+                type="submit"
+                class="login-btn"
+                id="loginButton"
+            >
+
+                <span class="button-text">
+                    Login
+                </span>
+
+                <span class="button-arrow">
+                    →
+                </span>
+
+            </button>
+
+
+            <p id="message"></p>
+
+        </form>
+
+
+        <!-- Divider -->
+        <div class="divider">
+            <span>OR</span>
+        </div>
+
+
+        <!-- Register -->
+        <p class="register-text">
+
+            Don't have an account?
+
+            <a href="#">
+                Create account
+            </a>
+
+        </p>
+
+    </section>
+
+</main>
+
+
+<script>
+
+    const form = document.getElementById("loginForm");
+    const message = document.getElementById("message");
+    const loginButton = document.getElementById("loginButton");
+
+    form.addEventListener("submit", async (event) => {
+
+        event.preventDefault();
+
+        const email =
+            document.getElementById("email").value.trim();
+
+        const password =
+            document.getElementById("password").value;
+
+        const recaptcha =
+            grecaptcha.getResponse();
+
+        message.textContent = "";
+
+        if (!recaptcha) {
+
+            message.textContent =
+                "Please select captcha";
+
+            return;
+        }
+
+        loginButton.disabled = true;
+
+        loginButton.innerHTML =
+            "Logging in...";
+
+        try {
+
+            const captchaResponse = await fetch(
+                "http://localhost:5501/recaptcha",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        captcha: recaptcha
+                    })
+                }
+            );
+
+            const captchaData =
+                await captchaResponse.json();
+
+            if (!captchaData.success) {
+
+                message.textContent =
+                    captchaData.message;
+
+                return;
+            }
+
+            const response = await fetch(
+                "http://localhost:5501/login",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        email: email,
+                        password: password
+                    })
+                }
+            );
+
+            const data =
+                await response.json();
+
+            if (response.ok && data.success) {
+
+                window.location.href =
+                    `http://localhost:5501${data.redirect}`;
+
+                return;
+            }
+
+            if (response.status === 429) {
+
+                message.textContent =
+                    data.message ||
+                    "Too many login attempts. Try again later.";
+
+                return;
+            }
+
+            if (response.status === 401) {
+
+                message.textContent =
+                    data.message ||
+                    "Email or password is incorrect.";
+
+                return;
+            }
+
+            if (response.status === 400) {
+
+                if (
+                    data.errors &&
+                    data.errors.length > 0
+                ) {
+
+                    message.textContent =
+                        data.errors
+                            .map(error => error.msg)
+                            .join(", ");
+
+                } else {
+
+                    message.textContent =
+                        data.message ||
+                        "Invalid input.";
+                }
+
+                return;
+            }
+
+            message.textContent =
+                data.message ||
+                "Something went wrong.";
+
+        } catch (error) {
+
+            console.error(
+                "Fetch error:",
+                error
+            );
+
+            message.textContent =
+                "Cannot connect to the server.";
+
+        } finally {
+
+            loginButton.disabled = false;
+
+            loginButton.innerHTML =
+                '<span class="button-text">Login</span>' +
+                '<span class="button-arrow">→</span>';
+        }
+
+    });
+
+</script>
+```
+
+</body>
+
+</html>

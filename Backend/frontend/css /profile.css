@@ -1,0 +1,867 @@
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --cream: #f8f5ef;
+    --cream-dark: #eee9df;
+    --white: #ffffff;
+    --black: #1d1d1b;
+    --gray: #77736c;
+    --light-gray: #aaa59c;
+    --accent: #b88a62;
+    --accent-light: #ead9c7;
+    --border: #e7e1d7;
+}
+
+body {
+    font-family: "DM Sans", sans-serif;
+    background: var(--cream);
+    color: var(--black);
+    min-height: 100vh;
+}
+
+
+/* =====================================================
+   NAVBAR
+===================================================== */
+
+.navbar {
+    height: 82px;
+    padding: 0 7%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: rgba(248, 245, 239, 0.94);
+    border-bottom: 1px solid var(--border);
+}
+
+.logo {
+    text-decoration: none;
+
+    font-family: "Playfair Display", serif;
+    font-size: 30px;
+    font-weight: 700;
+
+    color: var(--black);
+}
+
+.logo span {
+    color: var(--accent);
+}
+
+.navbar nav {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+.navbar nav a {
+    position: relative;
+
+    text-decoration: none;
+
+    color: #68645e;
+    font-size: 14px;
+    font-weight: 500;
+
+    transition: 0.25s;
+}
+
+.navbar nav a:hover {
+    color: var(--black);
+}
+
+.navbar nav .active {
+    color: var(--black);
+    font-weight: 700;
+}
+
+.navbar nav .active::after {
+    content: "";
+
+    position: absolute;
+
+    bottom: -9px;
+    left: 0;
+
+    width: 100%;
+    height: 2px;
+
+    background: var(--accent);
+}
+
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+.profile-container {
+    width: min(1080px, 90%);
+
+    margin: 70px auto 100px;
+}
+
+
+/* =====================================================
+   PROFILE INTRO
+===================================================== */
+
+.profile-intro {
+    display: flex;
+    align-items: center;
+
+    gap: 30px;
+
+    padding-bottom: 55px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+
+/* =====================================================
+   AVATAR
+===================================================== */
+
+.avatar-wrapper {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.avatar {
+    width: 130px;
+    height: 130px;
+
+    border-radius: 50%;
+
+    overflow: hidden;
+
+    background-color: var(--accent-light);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-family: "Playfair Display", serif;
+    font-size: 38px;
+    font-weight: 600;
+
+    color: #76563d;
+
+    border: 5px solid white;
+
+    box-shadow:
+        0 10px 30px rgba(60, 45, 30, 0.08);
+
+    cursor: pointer;
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    transition: 0.25s;
+}
+
+.avatar:hover {
+    transform: scale(1.03);
+    box-shadow:
+        0 14px 35px rgba(60, 45, 30, 0.14);
+}
+
+
+/* File input is hidden */
+
+#profileImage {
+    display: none;
+}
+
+
+/* =====================================================
+   CHANGE PHOTO BUTTON
+===================================================== */
+
+.change-photo {
+    position: absolute;
+
+    right: 3px;
+    bottom: 7px;
+
+    width: 32px;
+    height: 32px;
+
+    border-radius: 50%;
+
+    border: 3px solid var(--cream);
+
+    background: var(--black);
+    color: white;
+
+    cursor: pointer;
+
+    font-size: 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 5;
+}
+
+
+/* =====================================================
+   PROFILE IDENTITY
+===================================================== */
+
+.profile-identity {
+    flex: 1;
+}
+
+.profile-label {
+    display: block;
+
+    font-size: 11px;
+    letter-spacing: 2px;
+
+    color: var(--accent);
+
+    font-weight: 700;
+}
+
+.profile-identity h1 {
+    font-family: "Playfair Display", serif;
+
+    font-size: clamp(36px, 5vw, 52px);
+
+    font-weight: 600;
+
+    margin: 7px 0;
+}
+
+.profile-identity p {
+    color: var(--gray);
+    font-size: 16px;
+}
+
+.location {
+    display: inline-block;
+
+    margin-top: 9px;
+
+    color: var(--light-gray);
+    font-size: 13px;
+}
+
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.edit-btn {
+    background: var(--black);
+    color: white;
+
+    border: none;
+
+    padding: 13px 23px;
+
+    border-radius: 7px;
+
+    font-family: inherit;
+    font-size: 13px;
+
+    cursor: pointer;
+
+    transition: 0.25s;
+}
+
+.edit-btn:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.small-edit,
+.add-btn {
+    border: none;
+
+    background: transparent;
+
+    color: var(--accent);
+
+    font-family: inherit;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.add-btn {
+    padding: 9px 14px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 6px;
+
+    background: white;
+}
+
+.add-btn:hover {
+    border-color: var(--accent);
+}
+
+
+/* =====================================================
+   PROFILE CONTENT
+===================================================== */
+
+.profile-content {
+    margin-top: 20px;
+}
+
+.profile-section {
+    padding: 48px 0;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.section-heading {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 25px;
+}
+
+.section-heading > div {
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+}
+
+.section-number {
+    font-size: 11px;
+
+    color: var(--accent);
+
+    letter-spacing: 1px;
+
+    font-weight: 700;
+}
+
+.section-heading h2 {
+    font-family: "Playfair Display", serif;
+
+    font-size: 27px;
+
+    font-weight: 600;
+}
+
+
+/* =====================================================
+   ABOUT
+===================================================== */
+
+.about-box {
+    max-width: 780px;
+}
+
+.about-box p {
+    font-size: 17px;
+
+    line-height: 1.9;
+
+    color: var(--gray);
+}
+
+
+/* =====================================================
+   SKILLS
+===================================================== */
+
+.skills-container {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 11px;
+}
+
+.skill {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 10px 14px;
+
+    background: white;
+
+    border: 1px solid var(--border);
+
+    border-radius: 30px;
+
+    font-size: 13px;
+
+    color: #55514b;
+}
+
+.skill button {
+    border: none;
+
+    background: transparent;
+
+    color: var(--light-gray);
+
+    cursor: pointer;
+
+    font-size: 16px;
+}
+
+.skill button:hover {
+    color: #a65d5d;
+}
+
+.skill-placeholder {
+    border: 1px dashed #c8c0b4;
+
+    background: transparent;
+
+    color: var(--accent);
+
+    padding: 10px 16px;
+
+    border-radius: 30px;
+
+    cursor: pointer;
+
+    font-family: inherit;
+
+    font-size: 13px;
+}
+
+
+/* =====================================================
+   PROJECTS
+===================================================== */
+
+.projects-area {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 16px;
+}
+
+.project-card {
+    background: white;
+
+    border: 1px solid var(--border);
+
+    border-radius: 12px;
+
+    padding: 22px;
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 18px;
+
+    transition: 0.25s;
+}
+
+.project-card:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 15px 35px rgba(50, 40, 30, 0.07);
+}
+
+.project-symbol {
+    width: 46px;
+    height: 46px;
+
+    flex-shrink: 0;
+
+    border-radius: 10px;
+
+    background: var(--accent-light);
+
+    color: var(--accent);
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 20px;
+}
+
+.project-details {
+    flex: 1;
+}
+
+.project-details h3 {
+    font-size: 17px;
+
+    margin-bottom: 6px;
+}
+
+.project-details p {
+    font-size: 13px;
+
+    line-height: 1.6;
+
+    color: var(--gray);
+
+    max-width: 600px;
+}
+
+.project-tech {
+    display: flex;
+
+    gap: 7px;
+
+    margin-top: 12px;
+}
+
+.project-tech span {
+    background: var(--cream);
+
+    padding: 5px 9px;
+
+    border-radius: 5px;
+
+    font-size: 11px;
+
+    color: #716b63;
+}
+
+.project-menu {
+    border: none;
+
+    background: transparent;
+
+    font-size: 22px;
+
+    color: var(--light-gray);
+
+    cursor: pointer;
+}
+
+
+/* =====================================================
+   EMPTY PROJECT
+===================================================== */
+
+.empty-project {
+    border: 1px dashed #d2c9bc;
+
+    border-radius: 12px;
+
+    padding: 45px 25px;
+
+    text-align: center;
+
+    background: rgba(255, 255, 255, 0.35);
+}
+
+.empty-icon {
+    width: 52px;
+    height: 52px;
+
+    border-radius: 50%;
+
+    background: white;
+
+    border: 1px solid var(--border);
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin: 0 auto 16px;
+
+    font-size: 25px;
+
+    color: var(--accent);
+}
+
+.empty-project h3 {
+    font-family: "Playfair Display", serif;
+
+    font-size: 21px;
+
+    margin-bottom: 7px;
+}
+
+.empty-project p {
+    max-width: 430px;
+
+    margin: auto;
+
+    color: var(--gray);
+
+    font-size: 13px;
+
+    line-height: 1.6;
+}
+
+.add-project {
+    margin-top: 20px;
+
+    padding: 11px 18px;
+
+    background: var(--black);
+
+    color: white;
+
+    border: none;
+
+    border-radius: 6px;
+
+    cursor: pointer;
+
+    font-family: inherit;
+}
+
+
+/* =====================================================
+   LINKS
+===================================================== */
+
+.links-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 15px;
+}
+
+.social-link {
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    padding: 18px;
+
+    background: white;
+
+    border: 1px solid var(--border);
+
+    border-radius: 10px;
+
+    text-decoration: none;
+
+    color: var(--black);
+
+    transition: 0.25s;
+}
+
+.social-link:hover {
+    transform: translateY(-2px);
+
+    border-color: #d2c0ac;
+}
+
+.social-link > span {
+    width: 38px;
+    height: 38px;
+
+    border-radius: 8px;
+
+    background: var(--cream);
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-weight: 700;
+
+    font-size: 13px;
+}
+
+.social-link strong {
+    display: block;
+
+    font-size: 14px;
+}
+
+.social-link small {
+    display: block;
+
+    margin-top: 3px;
+
+    color: var(--light-gray);
+
+    font-size: 11px;
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+footer {
+    padding: 45px 7%;
+
+    border-top: 1px solid var(--border);
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    color: var(--light-gray);
+
+    font-size: 12px;
+}
+
+.footer-logo {
+    font-family: "Playfair Display", serif;
+
+    font-size: 22px;
+
+    color: var(--black);
+}
+
+.footer-logo span {
+    color: var(--accent);
+}
+
+
+/* =====================================================
+   RESPONSIVE — TABLET
+===================================================== */
+
+@media (max-width: 800px) {
+
+    .navbar {
+        padding: 0 5%;
+    }
+
+    .navbar nav {
+        gap: 15px;
+    }
+
+    .navbar nav a {
+        font-size: 12px;
+    }
+
+    .profile-intro {
+        flex-wrap: wrap;
+    }
+
+    .edit-btn {
+        margin-left: 160px;
+    }
+
+    .links-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* =====================================================
+   RESPONSIVE — MOBILE
+===================================================== */
+
+@media (max-width: 600px) {
+
+    .navbar {
+        height: auto;
+
+        padding: 20px;
+
+        flex-direction: column;
+
+        gap: 20px;
+    }
+
+    .navbar nav {
+        flex-wrap: wrap;
+
+        justify-content: center;
+    }
+
+    .profile-container {
+        width: 90%;
+
+        margin-top: 40px;
+    }
+
+    .profile-intro {
+        align-items: flex-start;
+    }
+
+    .avatar {
+        width: 100px;
+        height: 100px;
+
+        font-size: 30px;
+    }
+
+    .profile-identity h1 {
+        font-size: 34px;
+    }
+
+    .edit-btn {
+        margin-left: 0;
+    }
+
+    .section-heading h2 {
+        font-size: 23px;
+    }
+
+    footer {
+        flex-direction: column;
+
+        gap: 12px;
+
+        text-align: center;
+    }
+}
+
+.username-row {
+display: flex;
+align-items: center;
+gap: 12px;
+}
+
+.username-edit-btn {
+background: transparent;
+border: 1px solid #9b7b5c;
+color: #9b7b5c;
+padding: 7px 14px;
+border-radius: 8px;
+font-family: "DM Sans", sans-serif;
+font-size: 13px;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.2s ease;
+}
+
+.username-edit-btn:hover {
+background: #9b7b5c;
+color: #ffffff;
+}
+
+.username-edit-btn:active {
+transform: scale(0.97);
+}

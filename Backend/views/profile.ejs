@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile — Teamora</title>
+    <link rel="stylesheet" href="../css /profile.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+    <header class="navbar">
+        <a href="index.html" class="logo">
+            Team<span>ora</span>
+        </a>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="index.html#about">About</a>
+            <a href="contact.html">Contact Us</a>
+            <a href="signup.html">Sign Up</a>
+            <a href="signin.html">Sign In</a>
+            <a href="/profile/8cda9b13-a3b3-11f1-86ce-ae0e399c6f6d">Profile</a>
+        </nav>
+    </header>
+
+    <!-- ================= PROFILE ================= -->
+    <main class="profile-container">
+        <form action="/upload" method="POST" class="form" enctype="multipart/form-data">
+
+            <!-- ================= PROFILE INTRO ================= -->
+            <section class="profile-intro">
+
+                <!-- ================= AVATAR ================= -->
+                <div class="avatar-wrapper">
+                    <div class="avatar" id="avatar">
+                        <span id="avatarText">MY</span>
+                        <input type="file" id="profileImage" name="imagesuploads" accept="image/*" hidden>
+                    </div>
+                </div>
+
+                <!-- ================= IDENTITY ================= -->
+                <div class="profile-identity">
+                    <span class="profile-label">STUDENT PROFILE</span>
+
+                    <!-- USERNAME -->
+                    <div class="username-row">
+                        <h1 id="userName" contenteditable="true" spellcheck="false"></h1>
+                    </div>
+
+                    <!-- FAMILY NAME -->
+                    <p id="familyName" contenteditable="true" spellcheck="false"></p>
+
+                    <!-- SECTION + GROUP -->
+                    <div class="student-info">
+                        <span>Section: <strong id="studentSection">-</strong></span>
+                        <span>Group: <strong id="studentGroup">-</strong></span>
+                    </div>
+
+                    <p>Computer Science Student</p>
+
+                    <span class="location">📍 Algeria</span>
+                </div>
+
+                <!-- SAVE NAMES -->
+                <button type="button" class="username-edit-btn" id="saveNames">
+                    Save changes
+                </button>
+
+                <!-- SAVE PROFILE -->
+                <button type="submit" class="edit-btn" id="saveProfile">
+                    Save Profile
+                </button>
+
+            </section>
+
+            <!-- ================= CONTENT ================= -->
+            <section class="profile-content">
+
+                <!-- ================= ABOUT ================= -->
+                <div class="profile-section">
+                    <div class="section-heading">
+                        <div>
+                            <span class="section-number">01</span>
+                            <h2>About me</h2>
+                        </div>
+                        <button type="button" class="small-edit" id="editDesc">Edit</button>
+                    </div>
+
+                    <div class="about-box">
+                        <p id="desc" contenteditable="false" spellcheck="false"></p>
+                    </div>
+                </div>
+
+                <!-- ================= SKILLS ================= -->
+                <div class="profile-section">
+                    <div class="section-heading">
+                        <div>
+                            <span class="section-number">02</span>
+                            <h2>My skills</h2>
+                        </div>
+                        <button type="button" class="add-btn" id="addSkillButton">+ Add skill</button>
+                    </div>
+
+                    <div class="skills-container" id="skillsContainer"></div>
+                </div>
+
+                <!-- ================= PROJECTS ================= -->
+                <div class="profile-section">
+                    <div class="section-heading">
+                        <div>
+                            <span class="section-number">03</span>
+                            <h2>My projects</h2>
+                        </div>
+                        <button type="button" class="add-btn">+ Add project</button>
+                    </div>
+
+                    <div class="projects-area">
+                        <!-- PROJECT -->
+                        <article class="project-card">
+                            <div class="project-symbol">✦</div>
+                            <div class="project-details">
+                                <h3>Teamora</h3>
+                                <p>A platform that helps students find teammates and create project teams.</p>
+                                <div class="project-tech">
+                                    <span>Node.js</span>
+                                    <span>Express</span>
+                                    <span>MySQL</span>
+                                </div>
+                            </div>
+                            <button type="button" class="project-menu">⋮</button>
+                        </article>
+
+                        <!-- EMPTY PROJECT -->
+                        <div class="empty-project">
+                            <div class="empty-icon">+</div>
+                            <h3>Add your first project</h3>
+                            <p>Showcase projects you've worked on and let other students discover your skills.</p>
+                            <button type="button" class="add-project">Add project</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================= LINKS ================= -->
+                <div class="profile-section">
+                    <div class="section-heading">
+                        <div>
+                            <span class="section-number">04</span>
+                            <h2>Links</h2>
+                        </div>
+                    </div>
+
+                    <div class="links-grid">
+                        <a href="#" class="social-link">
+                            <span>GH</span>
+                            <div>
+                                <strong>GitHub</strong>
+                                <small>Add your GitHub profile</small>
+                            </div>
+                        </a>
+
+                        <a href="#" class="social-link">
+                            <span>in</span>
+                            <div>
+                                <strong>LinkedIn</strong>
+                                <small>Add your LinkedIn profile</small>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+            </section>
+        </form>
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer>
+        <div class="footer-logo">
+            Team<span>ora</span>
+        </div>
+        <p>Find your team. Build something meaningful.</p>
+        <span>© 2026 Teamora</span>
+    </footer>
+
+    <!-- ================= PROFILE SCRIPT ================= -->
+    <script>
+        /* ==================================================
+           ELEMENTS
+        ================================================== */
+        const form = document.querySelector(".form");
+        const avatar = document.getElementById("avatar");
+        const profileImage = document.getElementById("profileImage");
+        const avatarText = document.getElementById("avatarText");
+        const userName = document.getElementById("userName");
+        const familyName = document.getElementById("familyName");
+        const studentSection = document.getElementById("studentSection");
+        const studentGroup = document.getElementById("studentGroup");
+        const saveNames = document.getElementById("saveNames");
+        const saveprofile = document.getElementById("saveProfile");
+        const desc = document.getElementById("desc");
+        const editDesc = document.getElementById("editDesc");
+        const skillsContainer = document.getElementById("skillsContainer");
+        const addSkillButton = document.getElementById("addSkillButton");
+
+        /* ==================================================
+           LOAD USER INFORMATION
+        ================================================== */
+        async function loadUserInformation() {
+            try {
+                const response = await fetch(window.location.pathname, {
+                    method: "GET"
+                });
+
+                if (!response.ok) {
+                    console.log("Could not load user information");
+                    return;
+                }
+
+                const data = await response.json();
+                console.log("User information:", data);
+
+                /* USERNAME */
+                if (data.username !== undefined) {
+                    userName.textContent = data.username;
+                }
+
+                /* FAMILY NAME */
+                if (data.familynames !== undefined) {
+                    familyName.textContent = data.familynames;
+                }
+
+                /* SECTION */
+                if (data.section !== undefined) {
+                    studentSection.textContent = data.section;
+                }
+
+                /* GROUP */
+                if (data.groupe !== undefined) {
+                    studentGroup.textContent = data.groupe;
+                }
+
+                /* DESCRIPTION */
+                if (data.desc !== undefined && data.desc !== null) {
+                    desc.textContent = data.desc;
+                }
+
+                /* SKILLS */
+                loadSkills(data.skills);
+
+            } catch (error) {
+                console.log("Error when loading user information:", error);
+            }
+        }
+
+        /* ==================================================
+           LOAD SKILLS FROM DATABASE
+        ================================================== */
+        function loadSkills(skillsData) {
+            let skills = [];
+
+            try {
+                if (Array.isArray(skillsData)) {
+                    skills = skillsData;
+                } else if (typeof skillsData === "string") {
+                    skills = JSON.parse(skillsData || "[]");
+                }
+            } catch (error) {
+                console.log("Invalid skills JSON:", error);
+                skills = [];
+            }
+
+            /* Empty the container */
+            skillsContainer.innerHTML = "";
+
+            /* No skills */
+            if (skills.length === 0) {
+                skillsContainer.innerHTML = `
+                    <span class="skill-placeholder">
+                        No skills added yet
+                    </span>
+                `;
+                return;
+            }
+
+            /* Display every skill */
+            skills.forEach((skill) => {
+                createSkillElement(skill);
+            });
+        }
+
+        /* ==================================================
+           CREATE SKILL ELEMENT
+        ================================================== */
+        function createSkillElement(skill) {
+            const skillElement = document.createElement("span");
+            skillElement.className = "skill";
+            skillElement.textContent = skill;
+
+            const deleteButton = document.createElement("button");
+            deleteButton.type = "button";
+            deleteButton.textContent = "×";
+
+            deleteButton.addEventListener("click", () => {
+                console.log("Delete skill:", skill);
+            });
+
+            skillElement.appendChild(deleteButton);
+            skillsContainer.appendChild(skillElement);
+        }
+
+        /* ==================================================
+           LOAD USER INFORMATION WHEN PAGE OPENS
+        ================================================== */
+        loadUserInformation();
+
+        /* ==================================================
+           SAVE USERNAME + FAMILY NAME
+        ================================================== */
+        saveNames.addEventListener("click", async () => {
+            const username = userName.textContent.trim();
+            const familynames = familyName.textContent.trim();
+
+            if (username === "" || familynames === "") {
+                return;
+            }
+
+            try {
+                const url = `http://localhost:5501/updatingnames?username=${encodeURIComponent(username)}&familynames=${encodeURIComponent(familynames)}`;
+
+                const response = await fetch(url, {
+                    method: "PUT"
+                });
+
+                const data = await response.json();
+                console.log("Update response:", data);
+
+                if (!response.ok) {
+                    console.log(data.error || data.err || "Update failed");
+                    return;
+                }
+
+                console.log("Username and family name updated successfully");
+
+            } catch (error) {
+                console.log("Error when updating username and family name:", error);
+            }
+        });
+
+        /* ==================================================
+           EDIT + SAVE DESCRIPTION
+        ================================================== */
+        editDesc.addEventListener("click", async () => {
+            /* FIRST CLICK = EDIT */
+            if (desc.contentEditable === "false") {
+                desc.contentEditable = "true";
+                editDesc.textContent = "Save";
+                desc.focus();
+                return;
+            }
+
+            /* SECOND CLICK = SAVE */
+            const description = desc.textContent.trim();
+
+            if (description === "") {
+                console.log("Description cannot be empty");
+                return;
+            }
+
+            try {
+                const response = await fetch("http://localhost:5501/add-desc", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        desc: description
+                    })
+                });
+
+                const data = await response.json();
+                console.log("Description response:", data);
+
+                if (!response.ok) {
+                    console.log(data.error || "Description update failed");
+                    return;
+                }
+
+                /* SAVE SUCCESS */
+                desc.contentEditable = "false";
+                editDesc.textContent = "Edit";
+
+                console.log("Description saved successfully");
+
+            } catch (error) {
+                console.log("Error when updating description:", error);
+            }
+        });
+
+        /* ==================================================
+           PROFILE IMAGE
+        ================================================== */
+        avatar.addEventListener("click", () => {
+            profileImage.click();
+        });
+
+        profileImage.addEventListener("change", () => {
+            const file = profileImage.files[0];
+
+            if (!file) {
+                return;
+            }
+
+            const imageURL = URL.createObjectURL(file);
+
+            avatar.style.backgroundImage = `url("${imageURL}")`;
+            avatar.style.backgroundSize = "cover";
+            avatar.style.backgroundPosition = "center";
+            avatar.style.backgroundRepeat = "no-repeat";
+
+            avatarText.style.display = "none";
+        });
+
+        /* ==================================================
+           SAVE PROFILE
+        ================================================== */
+        saveprofile.addEventListener("click", async (event) => {
+            event.preventDefault();
+
+            try {
+                const formData = new FormData(form);
+
+                const response = await fetch("http://localhost:5501/saveProfile", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const data = await response.json();
+                console.log("Server response:", data);
+
+                if (!response.ok) {
+                    console.log(data.error || data.err || "Profile save failed");
+                    return;
+                }
+
+                if (data.user) {
+                    userName.textContent = data.user.username || "";
+                    familyName.textContent = data.user.familynames || "";
+                    studentSection.textContent = data.user.section || "";
+                    studentGroup.textContent = data.user.groupe || "";
+                }
+
+                if (profileImage.files.length > 0) {
+                    const file = profileImage.files[0];
+                    const imageURL = URL.createObjectURL(file);
+
+                    avatar.style.backgroundImage = `url("${imageURL}")`;
+                    avatar.style.backgroundSize = "cover";
+                    avatar.style.backgroundPosition = "center";
+                    avatar.style.backgroundRepeat = "no-repeat";
+
+                    avatarText.style.display = "none";
+                }
+
+            } catch (error) {
+                console.log("Error when saving profile:", error);
+            }
+        });
+
+        /* ==================================================
+           ADD SKILL
+        ================================================== */
+        addSkillButton.addEventListener("click", async () => {
+            const skill = prompt("Enter your skill:");
+
+            if (!skill) {
+                return;
+            }
+
+            const newSkill = skill.trim();
+
+            if (newSkill === "") {
+                return;
+            }
+
+            try {
+                const response = await fetch("/addskills", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        skills: newSkill
+                    })
+                });
+
+                const data = await response.json();
+                console.log("Add skill response:", data);
+
+                if (!response.ok) {
+                    console.log(data.error || "Could not add skill");
+                    return;
+                }
+
+                loadSkills(data.skills);
+                console.log("Skill added successfully");
+
+            } catch (error) {
+                console.log("Error when adding skill:", error);
+            }
+        });
+    </script>
+</body>
+
+</html>
