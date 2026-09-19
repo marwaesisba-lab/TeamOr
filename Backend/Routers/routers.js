@@ -17,6 +17,8 @@ const { editUsername } = require("../controllers/Profile/editUsername");
 const { addDescription } = require("../controllers/Profile/adddescription");
 const getUserId = require("../functions/getUserid");
 const { addyourSkills } = require("../functions/addYourSkills");
+const { saveUpdates } = require("../functions/saveallupdates");
+const { db } = require("../database/database");
 
 const loginLimiter = limiter.rateLimit({
     windowMs: 15 * 60 * 1000,
@@ -147,42 +149,71 @@ routers.get("/profile/:id",
         });  
     }
 );
+routers.post('/addskills' , addyourSkills)
+
+// get all data
+routers.get("/profile-data/:id",
+    param('id')
+        .notEmpty()
+        .withMessage("id is required")
+        .isUUID()
+        .withMessage("id must be a valid UUID"),
+
+    autoRefreshToken,
+    verifyToken,
+
+    (req, res) => {
+
+        const result = validationResult(req);
+
+        if (!result.isEmpty()) {
+            return res.status(400).json({
+                errors: result.array()
+            });
+        }
+
+        if (req.userselcted.id !== req.params.id) {
+            return res.status(401).json({
+                message: "unauth user in router get"
+            });
+        }
+        saveUpdates(req, res )
+
+    }
+);
 
 
-routers.post("/upload", (req, res) => {
+// ___________________ add user skills ______________________
+
+
+
+routers.post("/saveprofile", (req, res) => {
 
     upload(req, res, (error) => {
 
-        // 1️⃣ Multer error
         if (error) {
+            console.log("Multer error:", error);
+
             return res.status(500).json({
-                error: "Error when uploading picture profile"
+                error: error.message
             });
         }
 
-        // 2️⃣ User didn't select a file
-        if (req.file === undefined) {
+        if (!req.file) {
             return res.status(400).json({
-                error: "You did not select any file !!!"
+                error: "You did not select any file"
             });
         }
 
-        // 3️⃣ Everything is OK
         console.log("File uploading information:", req.file);
 
-        return res.status(200).json({
-            message: "You uploaded your file successfully",
-            file: req.file.filename
-        });
-
+        saveProfile(req, res);
     });
 
 });
-// ___________________ add user skills ______________________
-
-routers.post('/addskills' , addyourSkills)
-
-routers.post("/saveprofile" , saveProfile)
 routers.put("/updatingnames" , editUsername)
 routers.post("/add-desc" , addDescription)
+// save all informations for reload pages 
+//  ******************* (when reload  profile page getting all informations ) *********8
+routers.get("/getallinfos" , saveUpdates)
 module.exports = { routers}

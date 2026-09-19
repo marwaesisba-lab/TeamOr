@@ -209,52 +209,55 @@
         /* ==================================================
            LOAD USER INFORMATION
         ================================================== */
-        async function loadUserInformation() {
-            try {
-                const response = await fetch(window.location.pathname, {
-                    method: "GET"
-                });
+       async function loadUserInformation() {
 
-                if (!response.ok) {
-                    console.log("Could not load user information");
-                    return;
-                }
+    try {
 
-                const data = await response.json();
-                console.log("User information:", data);
+        const response = await fetch(
+    `/profile-data${window.location.pathname.replace("/profile", "")}`
+);
 
-                /* USERNAME */
-                if (data.username !== undefined) {
-                    userName.textContent = data.username;
-                }
+        console.log("GET profile status:", response.status);
 
-                /* FAMILY NAME */
-                if (data.familynames !== undefined) {
-                    familyName.textContent = data.familynames;
-                }
+        const data = await response.json();
 
-                /* SECTION */
-                if (data.section !== undefined) {
-                    studentSection.textContent = data.section;
-                }
+        console.log("DATA RECEIVED BY FRONTEND:", data);
 
-                /* GROUP */
-                if (data.groupe !== undefined) {
-                    studentGroup.textContent = data.groupe;
-                }
-
-                /* DESCRIPTION */
-                if (data.desc !== undefined && data.desc !== null) {
-                    desc.textContent = data.desc;
-                }
-
-                /* SKILLS */
-                loadSkills(data.skills);
-
-            } catch (error) {
-                console.log("Error when loading user information:", error);
-            }
+        if (!response.ok) {
+            console.log("Profile error:", data);
+            return;
         }
+
+        userName.textContent = data.username || "";
+        familyName.textContent = data.familynames || "";
+        studentSection.textContent = data.section || "-";
+        studentGroup.textContent = data.groupe || "-";
+
+        // picture
+        if (data.picture) {
+
+            avatar.style.backgroundImage = `url("${data.picture}")`;
+            avatar.style.backgroundSize = "cover";
+            avatar.style.backgroundPosition = "center";
+            avatar.style.backgroundRepeat = "no-repeat";
+
+            avatarText.style.display = "none";
+        }
+
+        // description
+        if (data.desc) {
+            desc.textContent = data.desc;
+        }
+
+        // skills
+        loadSkills(data.skills);
+
+    } catch (error) {
+
+        console.log("Frontend error:", error);
+
+    }
+}
 
         /* ==================================================
            LOAD SKILLS FROM DATABASE

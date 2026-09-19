@@ -4,258 +4,268 @@ const { db } = require("../../database/database");
 
 const saveProfile = (req, res) => {
 
+    filesystem.readFile(
+        path.join(__dirname, "..", "infos.txt"),
+        "utf8",
+        (err, infoData) => {
 
-filesystem.readFile(
-    path.join(__dirname, "..", "infos.txt"),
-    "utf8",
-    (err, data) => {
+            if (err) {
+                console.log("Error when reading infos.txt:", err);
 
-        if (err) {
-            console.log("Error when reading file:", err);
+                return res.status(500).json({
+                    error: "Error when reading user ID"
+                });
+            }
 
-            return res.status(500).json({
-                error: "Error when reading user ID"
-            });
-        }
+            // Get student ID
+            const id = infoData.split(":")[1].trim();
 
-        // Get ID from infos.txt
-        const id = data.split(":")[1].trim();
+            // --------------------------------
+            // Get user information
+            // --------------------------------
 
-        // --------------------------------
-        // Get username, family name,
-        // section and groupe FIRST
-        // --------------------------------
+            const usernameSql = `
+                SELECT username, familynames, section, groupe
+                FROM Students
+                WHERE id = ?
+            `;
 
-        const usernameSql = `
-            SELECT username, familynames, section, groupe
-            FROM Students
-            WHERE id = ?
-        `;
+            db.query(
+                usernameSql,
+                [id],
+                (err, userData) => {
 
-        db.query(
-            usernameSql,
-            [id],
-            (err, data) => {
+                    if (err) {
+                        console.log(err);
 
-                if (err) {
-                    return res.status(500).json({
-                        error:
-                            "Error in database when getting the user information"
-                    });
-                }
+                        return res.status(500).json({
+                            error: "Error in database when getting user information"
+                        });
+                    }
 
-                // User not found
-                if (data.length === 0) {
-                    return res.status(404).json({
-                        usernotfound: "User not found"
-                    });
-                }
+                    // User not found
+                    if (userData.length === 0) {
 
-                // --------------------------------
-                // User information
-                // --------------------------------
+                        return res.status(404).json({
+                            error: "User not found"
+                        });
 
-                const userInfo = {
-                    username: data[0].username,
-                    familynames: data[0].familynames,
-                    section: data[0].section,
-                    groupe: data[0].groupe
-                };
+                    }
 
-                console.log("User information:", userInfo);
+                    const userInfo = {
+                        username: userData[0].username,
+                        familynames: userData[0].familynames,
+                        section: userData[0].section,
+                        groupe: userData[0].groupe
+                    };
 
-                // --------------------------------
-                // Get the profile picture
-                // --------------------------------
+                    console.log("User information:", userInfo);
 
-                const imageFolder = path.join(
-                    __dirname,
-                    "../../uploadimages"
-                );
+                    // --------------------------------
+                    // Get image from uploadimages
+                    // --------------------------------
 
-                filesystem.readdir(
-                    imageFolder,
-                    (error, files) => {
+                    const imageFolder = path.join(
+                        __dirname,
+                        "../../uploadimages"
+                    );
 
-                        if (error) {
-                            return res.status(404).json({
-                                err: "Could not find the folder"
-                            });
-                        }
+                    filesystem.readdir(
+                        imageFolder,
+                        (error, files) => {
 
-                        if (files.length === 0) {
-                            return res.status(404).json({
-                                err: "No profile picture found"
-                            });
-                        }
+                            if (error) {
+                                console.log(error);
 
-                        // Get the first image
-                        const profilePicture = files[0];
+                                return res.status(404).json({
+                                    error: "Could not find uploadimages folder"
+                                });
+                            }
 
-                        console.log(
-                            "Profile picture:",
-                            profilePicture
-                        );
+                            if (files.length === 0) {
 
-                        // Full path of the image
-                        const imagePath = path.join(
-                            imageFolder,
-                            profilePicture
-                        );
+                                return res.status(404).json({
+                                    error: "No profile picture found"
+                                });
 
-                        // --------------------------------
-                        // Read the complete image
-                        // --------------------------------
+                            }
 
-                        filesystem.readFile(
-                            imagePath,
-                            (error, imageBuffer) => {
+                            // Get the first image
+                            const profilePicture = files[0];
 
-                                if (error) {
-                                    console.log(
-                                        "Error when reading image:",
-                                        error
-                                    );
+                            console.log(
+                                "Profile picture:",
+                                profilePicture
+                            );
 
-                                    return res.status(500).json({
-                                        error:
-                                            "Could not read the profile picture"
-                                    });
-                                }
+                            const imagePath = path.join(
+                                imageFolder,
+                                profilePicture
+                            );
 
-                                // --------------------------------
-                                // Check if profile already exists
-                                // --------------------------------
+                            // --------------------------------
+                            // Read image
+                            // --------------------------------
 
-                                const checkSql = `
-                                    SELECT id
-                                    FROM profile
-                                    WHERE student_id = ?
-                                `;
+                            filesystem.readFile(
+                                imagePath,
+                                (error, imageBuffer) => {
 
-                                db.query(
-                                    checkSql,
-                                    [id],
-                                    (err, existingProfile) => {
+                                    if (error) {
 
-                                        if (err) {
-                                            return res.status(500).json({
-                                                error:
-                                                    "Error when checking profile"
-                                            });
-                                        }
+                                        console.log(
+                                            "Error when reading image:",
+                                            error
+                                        );
 
-                                        // --------------------------------
-                                        // Profile already exists
-                                        // Update old picture
-                                        // --------------------------------
+                                        return res.status(500).json({
+                                            error: "Could not read profile picture"
+                                        });
 
-                                        if (existingProfile.length > 0) {
+                                    }
 
-                                            const updateSql = `
-                                                UPDATE profile
-                                                SET picture_profile = ?
-                                                WHERE student_id = ?
+                                    // --------------------------------
+                                    // Check if profile exists
+                                    // --------------------------------
+
+                                    const checkSql = `
+                                        SELECT id
+                                        FROM profile
+                                        WHERE student_id = ?
+                                    `;
+
+                                    db.query(
+                                        checkSql,
+                                        [id],
+                                        (err, existingProfile) => {
+
+                                            if (err) {
+
+                                                console.log(err);
+
+                                                return res.status(500).json({
+                                                    error: "Error when checking profile"
+                                                });
+
+                                            }
+
+                                            // --------------------------------
+                                            // Profile exists
+                                            // Update picture
+                                            // --------------------------------
+
+                                            if (existingProfile.length > 0) {
+
+                                                const updateSql = `
+                                                    UPDATE profile
+                                                    SET picture_profile = ?
+                                                    WHERE student_id = ?
+                                                `;
+
+                                                db.query(
+                                                    updateSql,
+                                                    [
+                                                        imageBuffer,
+                                                        id
+                                                    ],
+                                                    (err, result) => {
+
+                                                        if (err) {
+
+                                                            console.log(err);
+
+                                                            return res.status(500).json({
+                                                                error: err.message
+                                                            });
+
+                                                        }
+
+                                                        return res.status(200).json({
+
+                                                            message:
+                                                                "Profile picture updated successfully",
+
+                                                            user: userInfo,
+
+                                                            profilePicture:
+                                                                profilePicture
+
+                                                        });
+
+                                                    }
+                                                );
+
+                                                return;
+                                            }
+
+                                            // --------------------------------
+                                            // Profile does not exist
+                                            // Create profile
+                                            // --------------------------------
+
+                                            const insertSql = `
+                                                INSERT INTO profile
+                                                (
+                                                    student_id,
+                                                    \`desc\`,
+                                                    skills,
+                                                    picture_profile
+                                                )
+                                                VALUES (?, ?, ?, ?)
                                             `;
 
                                             db.query(
-                                                updateSql,
+                                                insertSql,
                                                 [
-                                                    imageBuffer,
-                                                    id
+                                                    id,
+                                                    "",
+                                                    JSON.stringify([]),
+                                                    imageBuffer
                                                 ],
                                                 (err, result) => {
 
                                                     if (err) {
+
+                                                        console.log(err);
+
                                                         return res.status(500).json({
-                                                            error:
-                                                                err.message
+                                                            error: err.message
                                                         });
+
                                                     }
 
-                                                    console.log(
-                                                        "Old profile picture replaced successfully"
-                                                    );
-
                                                     return res.status(200).json({
-                                                        message:
-                                                            "Profile picture updated successfully",
 
-                                                        user:
-                                                            userInfo,
+                                                        message:
+                                                            "Profile saved successfully",
+
+                                                        user: userInfo,
 
                                                         profilePicture:
                                                             profilePicture
+
                                                     });
+
                                                 }
                                             );
 
-                                            return;
                                         }
+                                    );
 
-                                        // --------------------------------
-                                        // Profile does not exist
-                                        // Create new profile
-                                        // --------------------------------
+                                }
+                            );
 
-                                        const insertSql = `
-                                            INSERT INTO profile
-                                            (
-                                                student_id,
-                                                \`desc\`,
-                                                skills,
-                                                picture_profile
-                                            )
-                                            VALUES (?, ?, ?, ?)
-                                        `;
+                        }
+                    );
 
-                                        db.query(
-                                            insertSql,
-                                            [
-                                                id,
-                                                "",
-                                                JSON.stringify([]),
-                                                imageBuffer
-                                            ],
-                                            (err, result) => {
+                }
+            );
 
-                                                if (err) {
-                                                    return res.status(500).json({
-                                                        error:
-                                                            err.message
-                                                    });
-                                                }
-
-                                                console.log(
-                                                    "Profile and picture inserted successfully"
-                                                );
-
-                                                return res.status(200).json({
-                                                    message:
-                                                        "Profile saved successfully",
-
-                                                    user:
-                                                        userInfo,
-
-                                                    profilePicture:
-                                                        profilePicture
-                                                });
-                                            }
-                                        );
-                                    }
-                                );
-                            }
-                        );
-                    }
-                );
-            }
-        );
-    }
-);
-
+        }
+    );
 
 };
 
 module.exports = {
-saveProfile
+    saveProfile
 };
